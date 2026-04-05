@@ -11,7 +11,7 @@ const STEPS = [
 /* ═══════════════════════════════════════════════════════════
    Main orchestrator
 ═══════════════════════════════════════════════════════════ */
-export function DiagnosticsScreen({ state, onRefresh }) {
+export function DiagnosticsScreen({ state, onRefresh, onLaunch }) {
   const [stepIndex, setStepIndex] = useState(0);
   const [animToken, setAnimToken] = useState(0);
 
@@ -43,15 +43,14 @@ export function DiagnosticsScreen({ state, onRefresh }) {
     return false;
   })();
 
-  const handleNext = async () => {
+  const handleNext = () => {
     if (!isNextEnabled) return;
     if (!isLastStep) { goNext(); return; }
-    await onRefresh();
-    setAnimToken((t) => t + 1);
+    onLaunch();
   };
 
   const nextLabel = (() => {
-    if (isLastStep)      return 'Run AkoFlow via Docker';
+    if (isLastStep)      return 'Launch AkoFlow →';
     if (stepIndex === 1 && state.error) return 'Continue anyway →';
     return 'Next →';
   })();

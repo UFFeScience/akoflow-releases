@@ -20,24 +20,28 @@
     "files": [
       "electron/**/*",
       "renderer/**/*",
+      "assets/**/*",
       "package.json"
     ],
     "mac": {
       "target": [
         { "target": "dmg", "arch": ["arm64", "x64"] }
       ],
-      "category": "public.app-category.developer-tools"
+      "category": "public.app-category.developer-tools",
+      "icon": "assets/icon.icns"
     },
     "win": {
       "target": [
         { "target": "nsis", "arch": ["x64"] }
-      ]
+      ],
+      "icon": "assets/icon.ico"
     },
     "linux": {
       "target": [
         { "target": "AppImage", "arch": ["x64"] }
       ],
-      "category": "Development"
+      "category": "Development",
+      "icon": "assets/icon.png"
     }
   },
   "dependencies": {

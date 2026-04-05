@@ -1,6 +1,7 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('akoflow', {
+  /* ── Existing diagnostics ── */
   getDockerStatus: async () => {
     console.log('[preload] getDockerStatus invoked');
     try {
@@ -37,5 +38,19 @@ contextBridge.exposeInMainWorld('akoflow', {
   openDockerAction: (actionUrl) => {
     console.log('[preload] openDockerAction', actionUrl);
     return ipcRenderer.invoke('docker:open-action', actionUrl);
+  },
+
+  /* ── AkoFlow container ── */
+  checkAkoflowRunning: () => ipcRenderer.invoke('akoflow:check-running'),
+  pullImage:           () => ipcRenderer.invoke('akoflow:pull-image'),
+  startContainer:      () => ipcRenderer.invoke('akoflow:start-container'),
+  stopContainer:       () => ipcRenderer.invoke('akoflow:stop-container'),
+  healthCheck:         () => ipcRenderer.invoke('akoflow:health-check'),
+
+  onPullProgress: (callback) => {
+    ipcRenderer.on('akoflow:pull-progress', (_event, data) => callback(data));
+  },
+  offPullProgress: () => {
+    ipcRenderer.removeAllListeners('akoflow:pull-progress');
   },
 });

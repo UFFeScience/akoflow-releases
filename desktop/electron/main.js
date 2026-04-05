@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, shell } = require('electron');
-const { execFile } = require('node:child_process');
+const { execFile, spawn } = require('node:child_process');
 const { promisify } = require('node:util');
+const http = require('node:http');
 const os = require('node:os');
 const path = require('node:path');
 
@@ -160,13 +161,18 @@ async function getDiagnostics() {
 }
 
 function createWindow() {
+  const iconFile = process.platform === 'darwin' ? 'icon_dock.png'
+    : process.platform === 'win32' ? 'icon.ico'
+    : 'icon.png';
+
   const win = new BrowserWindow({
     width: 1280,
     height: 860,
     minWidth: 1100,
     minHeight: 760,
     backgroundColor: '#07111f',
-    title: 'AkoFlow',
+    title: 'AkoFlow Desktop',
+    icon: path.join(__dirname, '..', 'assets', iconFile),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -202,6 +208,100 @@ function createWindow() {
   });
 }
 
+/* ─────────────────────────────────────────────────────────────
+   AkoFlow container management
+───────────────────────────────────────────────────────────── */
+const AKOFLOW_CONTAINER = 'akoflow-local';
+const AKOFLOW_VOLUME    = 'akoflow-local-data';
+const AKOFLOW_IMAGE     = 'akoflow/akoflow';
+const AKOFLOW_PORT      = 7777;
+
+async function checkAkoflowRunning() {
+  try {
+    const { stdout } = await execFileAsync('docker', [
+      'inspect', AKOFLOW_CONTAINER, '--format', '{{.State.Running}}',
+    ], { timeout: 5000 });
+    return stdout.trim() === 'true';
+  } catch {
+    return false;
+  }
+}
+
+async function stopAkoflowContainer() {
+  try {
+    await execFileAsync('docker', ['stop', AKOFLOW_CONTAINER], { timeout: 10000 });
+  } catch { /* already stopped or never started */ }
+}
+
+function httpPing(url, timeoutMs = 3000) {
+  return new Promise((resolve) => {
+    const req = http.get(url, { timeout: timeoutMs }, (res) => {
+      resolve(res.statusCode < 500);
+      res.resume();
+    });
+    req.on('timeout', () => { req.destroy(); resolve(false); });
+    req.on('error', () => resolve(false));
+  });
+}
+
+ipcMain.handle('akoflow:check-running', async () => {
+  const running = await checkAkoflowRunning();
+  logMain('Container check', running ? 'running' : 'not running');
+  return { running };
+});
+
+ipcMain.handle('akoflow:pull-image', async (event) => {
+  logMain('Pulling image', AKOFLOW_IMAGE);
+  return new Promise((resolve, reject) => {
+    const proc = spawn('docker', ['pull', AKOFLOW_IMAGE]);
+    proc.stdout.on('data', (data) => {
+      event.sender.send('akoflow:pull-progress', data.toString());
+    });
+    proc.stderr.on('data', (data) => {
+      event.sender.send('akoflow:pull-progress', data.toString());
+    });
+    proc.on('close', (code) => {
+      if (code === 0) { logMain('Image pulled successfully'); resolve({ ok: true }); }
+      else reject(new Error(`docker pull exited with code ${code}`));
+    });
+    proc.on('error', reject);
+  });
+});
+
+ipcMain.handle('akoflow:start-container', async () => {
+  logMain('Starting container', AKOFLOW_CONTAINER);
+  // Remove any leftover container (stopped / exited)
+  try {
+    await execFileAsync('docker', ['rm', '-f', AKOFLOW_CONTAINER], { timeout: 8000 });
+  } catch { /* nothing to remove */ }
+
+  await execFileAsync('docker', [
+    'run', '-d',
+    '--rm',
+    '--name', AKOFLOW_CONTAINER,
+    '-p', `${AKOFLOW_PORT}:80`,
+    '-v', `${AKOFLOW_VOLUME}:/data`,
+    AKOFLOW_IMAGE,
+  ], { timeout: 15000 });
+
+  logMain('Container started');
+  return { ok: true };
+});
+
+ipcMain.handle('akoflow:stop-container', async () => {
+  logMain('Stopping container', AKOFLOW_CONTAINER);
+  await stopAkoflowContainer();
+  return { ok: true };
+});
+
+ipcMain.handle('akoflow:health-check', async () => {
+  const ok = await httpPing(`http://localhost:${AKOFLOW_PORT}/`);
+  return { ok };
+});
+
+/* ─────────────────────────────────────────────────────────────
+   Existing Docker / system IPC
+───────────────────────────────────────────────────────────── */
 ipcMain.handle('docker:get-status', async () => checkDockerStatus());
 ipcMain.handle('system:get-info', async () => getSystemInfo());
 // (os logs agora são retornados em systemInfo.logs)
@@ -228,6 +328,10 @@ ipcMain.handle('docker:open-action', async (_event, actionUrl) => {
 });
 
 app.whenReady().then(() => {
+  if (process.platform === 'darwin' && app.dock) {
+    app.dock.setIcon(path.join(__dirname, '..', 'assets', 'icon_dock.png'));
+  }
+
   createWindow();
 
   app.on('activate', () => {
@@ -241,4 +345,17 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+});
+
+// Stop the AkoFlow container gracefully when the app quits
+let isQuitting = false;
+app.on('will-quit', (event) => {
+  if (isQuitting) return;
+  event.preventDefault();
+  isQuitting = true;
+  logMain('App quitting — stopping AkoFlow container');
+  Promise.race([
+    stopAkoflowContainer(),
+    new Promise((resolve) => setTimeout(resolve, 6000)),
+  ]).finally(() => app.exit(0));
 });
