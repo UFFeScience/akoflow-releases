@@ -19,7 +19,7 @@ RUN apk add --no-cache \
     ca-certificates \
     unzip
 
-RUN git clone --depth 1 --branch "${BACKEND_REF}" "${BACKEND_REPO}" .
+RUN git clone --depth 1 --branch "${BACKEND_REF}" "${BACKEND_REPO}" . 
 
 RUN composer install --no-interaction --no-dev --prefer-dist --optimize-autoloader
 

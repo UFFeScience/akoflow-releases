@@ -1,24 +1,43 @@
-# AkoFlow Release Image
+# AkôFlow Releases
 
-Container de release que baixa a última versão da `main` do backend e do frontend, faz o build e expõe a aplicação inteira na porta 80.
+Central release repository for AkôFlow. Manages and publishes three artifacts:
 
-## Estrutura
+| Artifact | Description |
+|---|---|
+| **AkôFlow** (Docker) | Release image bundling the Control Plane and the UI, exposed on port 80 |
+| **AkôFlow Desktop** | Local Electron app that orchestrates the Docker image on the user's machine |
+| **AkôFlow Node** | Standalone Node app built for Linux, macOS and Windows |
 
-- `cloud/` - futura versão para disponibilidade em cloud.
-- `desktop/` - app Electron local que usa esta imagem de release.
+## Repository structure
 
-## Roteamento
-
-- `/api` -> Laravel
-- `/` -> Next.js
-
-## Build
-
-```bash
-docker build -t akoflow-release .
+```
+.
+├── Dockerfile          # Main Docker image build
+├── docker/             # nginx, php-fpm, supervisord and entrypoint configs
+├── desktop/            # Electron app (AkôFlow Desktop)
+└── cloud/              # Reserved for the future cloud version
 ```
 
-Se precisar usar outro fork ou outra branch, sobrescreva os `build-args`:
+---
+
+## AkôFlow (Docker image)
+
+Container that clones the latest version of the Control Plane and the UI, builds both, and exposes the full application on port 80.
+
+### Routing
+
+| Path | Service |
+|---|---|
+| `/api` | Control Plane |
+| `/` | UI |
+
+### Build
+
+```bash
+docker build -t akoflow/akoflow .
+```
+
+Overriding repository or branch:
 
 ```bash
 docker build \
@@ -26,17 +45,44 @@ docker build \
   --build-arg FRONTEND_REPO=https://github.com/UFFeScience/akoflow-deployment-control-plane-ui.git \
   --build-arg BACKEND_REF=main \
   --build-arg FRONTEND_REF=main \
-  -t akoflow-release .
+  -t akoflow/akoflow .
 ```
 
-## Run
+### Run
 
 ```bash
-docker run --rm -p 80:80 akoflow-release
+docker run --rm -p 80:80 akoflow/akoflow
 ```
 
-O container inicializa um banco SQLite local, aplica as migrations, executa o `db:seed`, sobe o worker de fila, o Laravel e o Next atrás do Nginx.
+The container initialises a local SQLite database, runs migrations, seeds the database, starts the queue worker, and serves the Control Plane and the UI behind Nginx.
 
-## Desktop app
+---
 
-A pasta `desktop/` será a interface local do AkoFlow. Ela vai verificar se o Docker está instalado, confirmar se o daemon está ativo e orientar a instalação/ativação quando necessário.
+## AkôFlow Desktop
+
+Electron app located in `desktop/`. Entry point for running AkôFlow locally without any manual setup.
+
+- Checks whether Docker is installed and the daemon is running.
+- Guides installation or activation when needed.
+- Pulls and starts the release image automatically.
+
+### Development
+
+```bash
+cd desktop
+npm install
+npm start
+```
+
+### Distribution
+
+The CI/CD pipeline generates installers for all platforms on every `vX.Y.Z` tag:
+
+| Platform | Format |
+|---|---|
+| macOS (Apple Silicon) | `.dmg` (arm64) |
+| macOS (Intel) | `.dmg` (x64) |
+| Windows | `.exe` (NSIS installer) |
+| Linux | `.AppImage` |
+
+Artifacts are automatically attached to the corresponding GitHub Release.
