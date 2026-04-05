@@ -1,0 +1,2 @@
+export const AKOFLOW_LOGO_URL = 'https://akoflow.com/wp-content/uploads/2024/12/icon_akoflow.png';
+export const AKOFLOW_BANNER_URL = 'https://akoflow.com/wp-content/uploads/2024/12/akoflow_logo_nobg-1-1536x835.png';

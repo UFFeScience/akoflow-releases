@@ -1,0 +1,45 @@
+@media (max-width: 960px) {
+  body {
+    overflow: auto;
+  }
+
+  .shell {
+    scroll-snap-type: none;
+  }
+
+  .welcome {
+    min-height: auto;
+    padding: 24px 0 28px;
+  }
+
+  .welcome,
+  .status {
+    width: calc(100% - 24px);
+    min-height: auto;
+  }
+
+  .mini-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .system-info__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .workflow-stepper__item {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  .status {
+    padding: 24px 0 28px;
+  }
+
+  h1 {
+    max-width: 100%;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+}

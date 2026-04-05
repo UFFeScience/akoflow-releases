@@ -1,0 +1,45 @@
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Editores/IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Variáveis de ambiente
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Dependências
+node_modules/
+
+# Build/artefatos
+dist/
+build/
+out/
+coverage/
+.cache/
+.tmp/
+.temp/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Java/Kotlin
+target/
+
+# Arquivos temporários
+*.tmp
+*.bak

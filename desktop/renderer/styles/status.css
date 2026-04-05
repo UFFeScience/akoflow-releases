@@ -1,0 +1,117 @@
+.status {
+  padding: 40px 0;
+  animation: fadeUp 900ms ease 120ms both;
+}
+
+.status > * {
+  width: 100%;
+}
+
+.status .status-top,
+.status h2,
+.status p,
+.status .actions,
+.status .tips {
+  max-width: 920px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.status h2 {
+  margin-top: 22px;
+}
+
+.status-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-label {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.75rem;
+}
+
+.badge {
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.badge-waiting {
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--accent);
+}
+
+.badge-ready {
+  background: rgba(20, 128, 74, 0.1);
+  color: var(--success);
+}
+
+.badge-danger {
+  background: rgba(214, 69, 69, 0.1);
+  color: var(--danger);
+}
+
+h2 {
+  margin: 22px 0 10px;
+  font-size: 2rem;
+  letter-spacing: -0.04em;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.button {
+  appearance: none;
+  border: 0;
+  border-radius: 16px;
+  padding: 14px 18px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+}
+
+.button-primary {
+  background: linear-gradient(135deg, var(--accent-strong), var(--accent));
+  color: #ffffff;
+  box-shadow: 0 18px 42px rgba(14, 165, 233, 0.24);
+}
+
+.button-secondary {
+  background: rgba(16, 24, 40, 0.04);
+  color: var(--text);
+  border: 1px solid rgba(16, 24, 40, 0.08);
+}
+
+.tips {
+  display: grid;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.tip {
+  padding: 16px 18px;
+  border-radius: 20px;
+  background: rgba(16, 24, 40, 0.03);
+  border: 1px solid rgba(16, 24, 40, 0.05);
+  display: grid;
+  gap: 4px;
+}
+
+.tip strong {
+  font-size: 0.95rem;
+}

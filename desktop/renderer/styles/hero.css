@@ -1,0 +1,138 @@
+.hero {
+  padding: 34px;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 24px;
+  transform: translateY(-6px);
+  animation: fadeUp 900ms ease both;
+}
+
+.hero-copy {
+  padding: 18px 10px 18px 8px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.12);
+  color: var(--accent);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2.9rem, 4.7vw, 5.4rem);
+  line-height: 0.94;
+  letter-spacing: -0.06em;
+  max-width: 12ch;
+}
+
+.hero p,
+.status p,
+.tip span {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.hero p {
+  font-size: 1.05rem;
+  max-width: 56ch;
+  margin: 22px 0 0;
+}
+
+.feature-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.feature-pill {
+  padding: 12px 16px;
+  border-radius: 999px;
+  background: rgba(16, 24, 40, 0.03);
+  border: 1px solid rgba(16, 24, 40, 0.06);
+  color: var(--text);
+  font-size: 0.92rem;
+}
+
+.hero-art {
+  padding: 24px;
+  display: grid;
+  gap: 18px;
+  align-content: center;
+  justify-items: center;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(245, 248, 252, 0.9));
+}
+
+.brand-stack {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-content: flex-start;
+}
+
+.brand-icon {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 12px 24px rgba(16, 24, 40, 0.08);
+}
+
+.brand-label {
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.brand-subtitle {
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.brand-banner {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 22px;
+  box-shadow: 0 20px 40px rgba(16, 24, 40, 0.08);
+}
+
+.mini-metrics {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.metric {
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(16, 24, 40, 0.04);
+  border: 1px solid rgba(16, 24, 40, 0.05);
+}
+
+.metric span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.metric strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.96rem;
+}

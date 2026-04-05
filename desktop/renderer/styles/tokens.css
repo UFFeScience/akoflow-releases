@@ -1,0 +1,16 @@
+:root {
+  color-scheme: light;
+  --bg: #f4f7fb;
+  --bg-soft: #eaf0f9;
+  --card: rgba(255, 255, 255, 0.82);
+  --card-solid: #ffffff;
+  --card-border: rgba(24, 45, 79, 0.08);
+  --text: #101828;
+  --muted: #5d6b82;
+  --accent: #2563eb;
+  --accent-strong: #0ea5e9;
+  --danger: #d64545;
+  --success: #14804a;
+  --shadow: 0 24px 60px rgba(16, 24, 40, 0.12);
+  --radius-xl: 32px;
+}
