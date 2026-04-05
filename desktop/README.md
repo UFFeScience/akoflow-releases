@@ -1,32 +1,32 @@
-# AkoFlow Desktop
+# AkôFlow Desktop
 
-Interface local do AkoFlow em Electron.
+Local interface for AkôFlow built with Electron.
 
-## O que ela faz
+## What it does
 
-- Verifica se o Docker está instalado.
-- Verifica se o daemon do Docker está ativo.
-- Orienta a instalação ou abertura do Docker Desktop quando necessário.
-- Serve como porta de entrada para o fluxo local que vai usar a imagem de release.
+- Checks if Docker is installed.
+- Checks if the Docker daemon is running.
+- Guides the user to install or open Docker Desktop when needed.
+- Serves as an entry point for the local flow that will use the release image.
 
-## Estrutura
+## Structure
 
-- `electron/` - processo principal, preload e integração com o sistema.
-- `renderer/app.js` - bootstrap da interface.
-- `renderer/components/` - blocos reutilizáveis da tela.
-- `renderer/services/` - acesso ao estado do Docker e ações externas.
-- `renderer/styles.css` - tema visual da aplicação.
-- `renderer/styles/` - tokens, layout, hero, status e responsividade.
+- `electron/` - main process, preload, and system integration.
+- `renderer/app.js` - interface bootstrap.
+- `renderer/components/` - reusable screen blocks.
+- `renderer/services/` - access to Docker state and external actions.
+- `renderer/styles.css` - application's visual theme.
+- `renderer/styles/` - tokens, layout, hero, status, and responsiveness.
 
-## Fluxo esperado
+## Expected flow
 
-1. Instalar as dependências com `npm install`.
-2. Abrir a aplicação com `npm start`.
-3. Se o Docker não existir, a tela mostra o link de instalação.
-4. Se o daemon estiver desligado, a tela orienta a abrir o Docker Desktop.
+1. Install dependencies with `npm install`.
+2. Open the application with `npm start`.
+3. If Docker is not installed, the screen shows the installation link.
+4. If the daemon is off, the screen guides the user to open Docker Desktop.
 
 ## Welcome flow
 
-- Tela inicial em etapas com animação e progresso.
-- Detecção automática do sistema para sugerir o download correto.
-- Caminho guiado: welcome, Docker, daemon, release image.
+- Step-by-step initial screen with animation and progress.
+- Automatic system detection to suggest the correct download.
+- Guided path: welcome, Docker, daemon, release image.

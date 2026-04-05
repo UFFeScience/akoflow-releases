@@ -20,8 +20,8 @@ export function AppScreen({ onStop }) {
     <div className="app-screen">
       <header className="app-screen__header">
         <div className="app-screen__brand">
-          <img src={AKOFLOW_LOGO_URL} alt="AkoFlow" className="app-screen__logo" />
-          <span className="app-screen__name">AkoFlow</span>
+          <img src={AKOFLOW_LOGO_URL} alt="AkôFlow" className="app-screen__logo" />
+          <span className="app-screen__name">AkôFlow</span>
           <span className="app-screen__url">{APP_URL}</span>
         </div>
 
@@ -31,7 +31,7 @@ export function AppScreen({ onStop }) {
           onClick={handleStopClick}
           disabled={stopping}
         >
-          {stopping ? 'Stopping…' : '■ Stop AkoFlow'}
+          {stopping ? 'Stopping…' : '■ Stop AkôFlow'}
         </button>
       </header>
 
@@ -39,11 +39,10 @@ export function AppScreen({ onStop }) {
       {showConfirm && (
         <div className="app-screen__overlay">
           <div className="app-screen__dialog">
-            <img src={AKOFLOW_LOGO_URL} alt="AkoFlow" className="app-screen__dialog-logo" />
-            <h2 className="app-screen__dialog-title">Stop AkoFlow?</h2>
+            <img src={AKOFLOW_LOGO_URL} alt="AkôFlow" className="app-screen__dialog-logo" />
+            <h2 className="app-screen__dialog-title">Stop AkôFlow?</h2>
             <p className="app-screen__dialog-body">
-              The container will be stopped. Your environment data is preserved in the
-              <strong> akoflow-local-data</strong> volume — everything will be here when you come back.
+              The container will be stopped, but <strong>your environment is not removed</strong> — all data stays inside the container and will be here when you come back.
             </p>
             <div className="app-screen__dialog-actions">
               <button
@@ -68,7 +67,7 @@ export function AppScreen({ onStop }) {
       <iframe
         className="app-screen__iframe"
         src={APP_URL}
-        title="AkoFlow"
+        title="AkôFlow"
         allow="clipboard-read; clipboard-write"
       />
     </div>

@@ -50,7 +50,7 @@ export function DiagnosticsScreen({ state, onRefresh, onLaunch }) {
   };
 
   const nextLabel = (() => {
-    if (isLastStep)      return 'Launch AkoFlow →';
+    if (isLastStep)      return 'Launch AkôFlow →';
     if (stepIndex === 1 && state.error) return 'Continue anyway →';
     return 'Next →';
   })();
@@ -61,7 +61,7 @@ export function DiagnosticsScreen({ state, onRefresh, onLaunch }) {
       <AmbientBlobs />
 
       <section className="single-screen__card">
-        <img className="single-screen__logo" src={AKOFLOW_LOGO_URL} alt="AkoFlow" />
+        <img className="single-screen__logo" src={AKOFLOW_LOGO_URL} alt="AkôFlow" />
 
         <StepIndicator steps={STEPS} current={stepIndex} />
 
@@ -179,7 +179,7 @@ function LogPanel({ logs, error }) {
 function StepWelcome() {
   return (
     <>
-      <div className="single-screen__label">Welcome to AkoFlow</div>
+      <div className="single-screen__label">Welcome to AkôFlow</div>
       <h1 className="single-screen__title">Local<br />Release.</h1>
       <p className="single-screen__copy">
         Preparing your environment. System checks will begin automatically.
@@ -269,7 +269,7 @@ function StepReady({ state, systemSummary, systemOk, dockerOk }) {
       <div className="single-screen__label">All set.</div>
       <h1 className="single-screen__title">Ready to<br />launch.</h1>
       <p className="single-screen__copy">
-        AkoFlow will be pulled and started via Docker.
+        AkôFlow will be pulled and started via Docker.
       </p>
       <CheckList checks={checks} />
     </>

@@ -20,13 +20,13 @@ export function App() {
   }, []);
 
   if (phase === 'init') {
-    return <CheckingScreen message="Checking environment…" />;
+    return <InitSpinner />;
   }
 
   if (phase === 'already-running') {
     return (
       <CheckingScreen
-        message="AkoFlow is already running. Connecting…"
+        message="AkôFlow is already running. Connecting…"
         onReady={() => setPhase('app')}
       />
     );
@@ -58,6 +58,22 @@ export function App() {
   return null;
 }
 
+function InitSpinner() {
+  return (
+    <main className="single-screen">
+      <div className="single-screen__ambient single-screen__ambient--one" />
+      <section className="single-screen__card">
+        <img className="single-screen__logo" src={AKOFLOW_LOGO_URL} alt="AkôFlow" />
+        <div className="single-screen__content">
+          <div className="loading-pulse">
+            <div className="loading-pulse__ring" />
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}
+
 function CheckingScreen({ message, onReady }) {
   useEffect(() => {
     if (!onReady) return undefined;
@@ -70,7 +86,7 @@ function CheckingScreen({ message, onReady }) {
       <div className="single-screen__ambient single-screen__ambient--one" />
       <div className="single-screen__ambient single-screen__ambient--two" />
       <section className="single-screen__card">
-        <img className="single-screen__logo" src={AKOFLOW_LOGO_URL} alt="AkoFlow" />
+        <img className="single-screen__logo" src={AKOFLOW_LOGO_URL} alt="AkôFlow" />
         <div className="single-screen__content single-screen__content--animated">
           <div className="loading-pulse">
             <div className="loading-pulse__ring" />

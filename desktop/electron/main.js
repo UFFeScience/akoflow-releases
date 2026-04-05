@@ -10,11 +10,11 @@ const shouldOpenDevTools = process.env.AKOFLOW_OPEN_DEVTOOLS === '1';
 
 function logMain(message, details) {
   if (details !== undefined) {
-    console.log(`[AkoFlow] ${message}`, details);
+    console.log(`[AkôFlow] ${message}`, details);
     return;
   }
 
-  console.log(`[AkoFlow] ${message}`);
+  console.log(`[AkôFlow] ${message}`);
 }
 
 async function checkDockerStatus() {
@@ -28,7 +28,7 @@ async function checkDockerStatus() {
     return {
       status: 'missing',
       title: 'Docker not found',
-      message: 'Install Docker Desktop to continue using AkoFlow locally.',
+      message: 'Install Docker Desktop to continue using AkôFlow locally.',
       error: error?.message || 'Docker CLI is unavailable.',
       actionLabel: 'Install Docker Desktop',
       actionUrl: 'https://www.docker.com/products/docker-desktop/',
@@ -101,7 +101,7 @@ function getSystemInfo() {
   const platformLabel = platformLabels[platform] ?? platform;
   const architectureLabel = architectureLabels[architecture] ?? architecture.toUpperCase();
 
-  logs.push(`[AkoFlow] Collecting system information: ${platformLabel} / ${architectureLabel}`);
+  logs.push(`[AkôFlow] Collecting system information: ${platformLabel} / ${architectureLabel}`);
   logMain('Collecting system information', `${platformLabel} / ${architectureLabel}`);
 
   return {
@@ -171,7 +171,7 @@ function createWindow() {
     minWidth: 1100,
     minHeight: 760,
     backgroundColor: '#07111f',
-    title: 'AkoFlow Desktop',
+    title: 'AkôFlow Desktop',
     icon: path.join(__dirname, '..', 'assets', iconFile),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -209,10 +209,9 @@ function createWindow() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   AkoFlow container management
+   AkôFlow container management
 ───────────────────────────────────────────────────────────── */
 const AKOFLOW_CONTAINER = 'akoflow-local';
-const AKOFLOW_VOLUME    = 'akoflow-local-data';
 const AKOFLOW_IMAGE     = 'akoflow/akoflow';
 const AKOFLOW_PORT      = 7777;
 
@@ -270,21 +269,35 @@ ipcMain.handle('akoflow:pull-image', async (event) => {
 
 ipcMain.handle('akoflow:start-container', async () => {
   logMain('Starting container', AKOFLOW_CONTAINER);
-  // Remove any leftover container (stopped / exited)
+
+  // Check if a container already exists (may be stopped / exited)
   try {
-    await execFileAsync('docker', ['rm', '-f', AKOFLOW_CONTAINER], { timeout: 8000 });
-  } catch { /* nothing to remove */ }
+    const { stdout } = await execFileAsync('docker', [
+      'inspect', AKOFLOW_CONTAINER, '--format', '{{.State.Status}}',
+    ], { timeout: 5000 });
+
+    const status = stdout.trim();
+    logMain('Existing container found', status);
+
+    if (status === 'running') {
+      logMain('Container already running');
+      return { ok: true };
+    }
+
+    // Stopped / exited — restart it (preserves filesystem & data)
+    await execFileAsync('docker', ['start', AKOFLOW_CONTAINER], { timeout: 15000 });
+    logMain('Container restarted');
+    return { ok: true };
+  } catch { /* container does not exist — create it fresh */ }
 
   await execFileAsync('docker', [
     'run', '-d',
-    '--rm',
     '--name', AKOFLOW_CONTAINER,
     '-p', `${AKOFLOW_PORT}:80`,
-    '-v', `${AKOFLOW_VOLUME}:/data`,
     AKOFLOW_IMAGE,
   ], { timeout: 15000 });
 
-  logMain('Container started');
+  logMain('Container created and started');
   return { ok: true };
 });
 
@@ -347,13 +360,13 @@ app.on('window-all-closed', () => {
   }
 });
 
-// Stop the AkoFlow container gracefully when the app quits
+// Stop the AkôFlow container gracefully when the app quits
 let isQuitting = false;
 app.on('will-quit', (event) => {
   if (isQuitting) return;
   event.preventDefault();
   isQuitting = true;
-  logMain('App quitting — stopping AkoFlow container');
+  logMain('App quitting — stopping AkôFlow container');
   Promise.race([
     stopAkoflowContainer(),
     new Promise((resolve) => setTimeout(resolve, 6000)),

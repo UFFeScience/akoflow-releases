@@ -4,7 +4,7 @@ export function WelcomeStep({ onStart }) {
   return (
     <div className="welcome-step">
       <div className="welcome-step__brand">
-        <img className="welcome-step__icon" src={AKOFLOW_LOGO_URL} alt="AkoFlow logo" />
+        <img className="welcome-step__icon" src={AKOFLOW_LOGO_URL} alt="AkôFlow logo" />
       </div>
       <h2 className="welcome-step__title">Local release.</h2>
       <div className="welcome-step__chips">

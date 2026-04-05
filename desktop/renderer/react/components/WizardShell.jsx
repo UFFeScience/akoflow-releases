@@ -23,7 +23,7 @@ export function WizardShell({
       <div className="wizard-shell__ambient wizard-shell__ambient--three" />
       <header className="wizard-shell__header">
         <div className="wizard-shell__brand">
-          <img className="wizard-shell__brand-mark" src={AKOFLOW_LOGO_URL} alt="AkoFlow logo" />
+          <img className="wizard-shell__brand-mark" src={AKOFLOW_LOGO_URL} alt="AkôFlow logo" />
         </div>
         <div className="wizard-shell__meta">
           <span>{stepLabel} {stepNumber}</span>
@@ -53,7 +53,7 @@ export function WizardShell({
             </div>
             {progress}
             <div className="wizard-shell__visual-card">
-              <img className="wizard-shell__visual-mark" src={AKOFLOW_BANNER_URL} alt="AkoFlow banner" />
+              <img className="wizard-shell__visual-mark" src={AKOFLOW_BANNER_URL} alt="AkôFlow banner" />
               <div className="wizard-shell__visual-data">
                 <div className="wizard-shell__visual-data-row">
                   <span>Platform</span>

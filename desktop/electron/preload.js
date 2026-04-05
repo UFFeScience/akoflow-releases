@@ -40,7 +40,7 @@ contextBridge.exposeInMainWorld('akoflow', {
     return ipcRenderer.invoke('docker:open-action', actionUrl);
   },
 
-  /* ── AkoFlow container ── */
+  /* ── AkôFlow container ── */
   checkAkoflowRunning: () => ipcRenderer.invoke('akoflow:check-running'),
   pullImage:           () => ipcRenderer.invoke('akoflow:pull-image'),
   startContainer:      () => ipcRenderer.invoke('akoflow:start-container'),

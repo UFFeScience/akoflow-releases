@@ -3,7 +3,7 @@ import { AKOFLOW_LOGO_URL } from '../brandAssets.jsx';
 
 const LAUNCH_STEPS = [
   { id: 'pull',   label: 'Pulling latest image',  detail: 'akoflow/akoflow' },
-  { id: 'start',  label: 'Starting container',     detail: `Port 7777 · Volume akoflow-local-data` },
+  { id: 'start',  label: 'Starting container',     detail: 'Port 7777 · akoflow-local' },
   { id: 'health', label: 'Waiting for service',    detail: 'http://localhost:7777' },
 ];
 
@@ -113,10 +113,10 @@ export function LaunchingScreen({ onLaunched, onBack }) {
       <div className="single-screen__ambient single-screen__ambient--three" />
 
       <section className="single-screen__card launching-card">
-        <img className="single-screen__logo" src={AKOFLOW_LOGO_URL} alt="AkoFlow" />
+        <img className="single-screen__logo" src={AKOFLOW_LOGO_URL} alt="AkôFlow" />
 
         <div className="single-screen__content single-screen__content--animated">
-          <div className="single-screen__label">Launching AkoFlow</div>
+          <div className="single-screen__label">Launching AkôFlow</div>
           <h1 className="single-screen__title">{titleText}</h1>
         </div>
 

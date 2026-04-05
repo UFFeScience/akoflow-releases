@@ -16,9 +16,9 @@ export function useDiagnostics() {
 
     const run = async () => {
       try {
-        console.log('[AkoFlow] Frontend requesting system information');
+        console.log('[AkôFlow] Frontend requesting system information');
         const systemInfo = await getSystemInfo();
-        console.log('[AkoFlow] Frontend system information received (raw):', systemInfo);
+        console.log('[AkôFlow] Frontend system information received (raw):', systemInfo);
 
         if (cancelled) return;
 
@@ -36,7 +36,7 @@ export function useDiagnostics() {
         }));
 
         // Start Docker check in background so UI can react to systemInfo immediately
-        console.log('[AkoFlow] Frontend requesting Docker status (background)');
+        console.log('[AkôFlow] Frontend requesting Docker status (background)');
         const DOCKER_TIMEOUT_MS = 10000;
         const dockerStatus = await Promise.race([
           getDockerStatus(),
@@ -44,7 +44,7 @@ export function useDiagnostics() {
             setTimeout(() => reject(new Error('Docker check timed out after 10 s. Open Docker Desktop and retry.')), DOCKER_TIMEOUT_MS)
           ),
         ]);
-        console.log('[AkoFlow] Frontend Docker status received (raw):', dockerStatus);
+        console.log('[AkôFlow] Frontend Docker status received (raw):', dockerStatus);
 
         if (cancelled) return;
 
@@ -63,7 +63,7 @@ export function useDiagnostics() {
       } catch (error) {
         if (cancelled) return;
 
-        console.error('[AkoFlow] Diagnostics failed:', error);
+        console.error('[AkôFlow] Diagnostics failed:', error);
 
         setState({
           systemInfo: null,
@@ -84,10 +84,10 @@ export function useDiagnostics() {
 
   return [state, {
     refresh: async () => {
-      console.log('[AkoFlow] Frontend refreshing diagnostics');
+      console.log('[AkôFlow] Frontend refreshing diagnostics');
       try {
         const systemInfo = await getSystemInfo();
-        console.log('[AkoFlow] Frontend system information received (raw):', systemInfo);
+        console.log('[AkôFlow] Frontend system information received (raw):', systemInfo);
 
         const safeSystem = systemInfo || { platformLabel: 'Unknown', architectureLabel: 'Unknown', logs: [] };
 
@@ -112,7 +112,7 @@ export function useDiagnostics() {
             )
           ),
         ]);
-        console.log('[AkoFlow] Frontend Docker status received (raw):', dockerStatus);
+        console.log('[AkôFlow] Frontend Docker status received (raw):', dockerStatus);
 
         const safeDocker = dockerStatus || { status: 'missing', message: 'Unknown', error: null };
 
@@ -128,7 +128,7 @@ export function useDiagnostics() {
           error: null,
         }));
       } catch (err) {
-        console.error('[AkoFlow] Refresh error', err);
+        console.error('[AkôFlow] Refresh error', err);
         setState((s) => ({ ...s, loading: false, error: err?.message || 'Refresh failed.' }));
       }
     },

@@ -1,3 +1,3 @@
 # Cloud
 
-Pasta reservada para a futura versão cloud do AkoFlow.
+Pasta reservada para a futura versão cloud do AkôFlow.
